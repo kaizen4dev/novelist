@@ -1,9 +1,3 @@
-export def validate-category [category: string] {
-  if ($category not-in ["all", "reading", "dropped", "finished"]) {
-    error make {msg: "Unknown category"}
-  }
-}
-
 export def ensure-local-directory [] {
   if not ( "~/.local/share/novelist" | path exists) {
     mkdir ~/.local/share/novelist
