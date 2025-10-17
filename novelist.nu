@@ -1,6 +1,16 @@
 use modules/database.nu *
 use modules/general.nu *
 
+# Your own novel list in simple script!
+#
+# Add, view, edit and remove your novels with these commands:
+#
+#   novelist                  - list all novels
+#   novelist show             - list all novels
+#   novelist show [category]  - list novels only in specific category
+#   novelist add              - get prompt to add a novel to the list
+#   novelist edit             - get prompt to search and edit an entry
+#   novelist remove           - get prompt to search and remove an entry
 export def main [mode?: string = "show" category?: string = "all"] {
   ensure-local-directory
   load-database
