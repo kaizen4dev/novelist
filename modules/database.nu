@@ -3,7 +3,8 @@ export def load-database [] {
   stor reset
 
   if ( database-exists ) {
-    let database = mktemp -t --suffix ".db"
+    mkdir /tmp/novelist
+    let database = mktemp $"XXXXXX-novelist.db" -p /tmp/novelist
     cp ~/.local/share/novelist/novels.db $database
     stor import -f $database
   } else {
@@ -16,7 +17,8 @@ export def load-database [] {
 export def save-database [] {
   ensure-local-directory
   if (stor open | is-not-empty) {
-    let temp = mktemp -t --suffix ".db"
+    mkdir /tmp/novelist
+    let temp = mktemp $"XXXXXX-novelist.db" -p /tmp/novelist
     stor export -f $temp
     mv $temp ~/.local/share/novelist/novels.db
     stor reset
