@@ -25,12 +25,12 @@ def "main show" [category: string = "all"] {
 }
 
 # add novel to the database
-def "main add" [] {
+def "main add" [title? chapters? category?] {
   load-database
 
-  let title = (input "Plese enter novel title: ")
-  let chapters = (input "Chapters: ")
-  let category = (input "Category: ")
+  let title = if ($title | is-not-empty) {$title} else { input "Plese enter novel title: " }
+  let chapters = if ($chapters | is-not-empty) {$chapters} else { input "Chapters: " }
+  let category = if ($category | is-not-empty) {$category} else { input "Category: " }
   stor insert -t novels -d {title: $title, chapters: $chapters, category: $category}
 
   save-database
