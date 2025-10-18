@@ -1,3 +1,5 @@
+#!/usr/bin/env nu
+
 use modules/database.nu *
 use modules/general.nu *
 
@@ -11,7 +13,7 @@ use modules/general.nu *
 #   novelist add              - get prompt to add a novel to the list
 #   novelist edit             - get prompt to search and edit an entry
 #   novelist remove           - get prompt to search and remove an entry
-export def main [mode?: string = "show" category?: string = "all"] {
+def main [mode?: string = "show" category?: string = "all"] {
   ensure-local-directory
   load-database
 

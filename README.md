@@ -21,7 +21,5 @@ Nothing to see here, yet.
 
 Go away.
 
-If you are still reading this section... and you happened to be a nushell user.. you can clone this repo and add "use /path/to/repo/novelist.nu" to your nushell configuration file, novelist command should be available in your terminal/shell once you restart it. On that note, only useful line in this readme is over. Bye.
-
 ## To Do ation
 blank
