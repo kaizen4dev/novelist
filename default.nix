@@ -2,14 +2,17 @@
 
 stdenv.mkDerivation rec {
   pname = "novelist";
-  version = "1.1.0";
+  version = "1.1.1";
 
-  src = fetchFromGitHub {
-    owner = "kaizen4dev";
-    repo = pname;
-    rev = "v${version}";
-    sha256 = "sha256-Lv8EZnQAYcG41BMT9/1gA3QUml/4z82zj29P+iWPkro=";
-  };
+  src = ./.;
+
+  # or fetch form github
+  # src = fetchFromGitHub {
+  #   owner = "kaizen4dev";
+  #   repo = pname;
+  #   rev = "v${version}";
+  #   sha256 = ""; # you'll need to find out this yourself.
+  # };
 
   dontBuild = true;
 
