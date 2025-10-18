@@ -1,4 +1,5 @@
 export def load-database [] {
+  ensure-local-directory
   stor reset
 
   if ( database-exists ) {
@@ -13,6 +14,7 @@ export def load-database [] {
 }
 
 export def save-database [] {
+  ensure-local-directory
   if (stor open | is-not-empty) {
     let temp = mktemp -t --suffix ".db"
     stor export -f $temp
@@ -26,3 +28,10 @@ export def save-database [] {
 def database-exists [] {
   ls ~/.local/share/novelist | to text | $in has novels.db
 }
+
+def ensure-local-directory [] {
+  if not ( "~/.local/share/novelist" | path exists) {
+    mkdir ~/.local/share/novelist
+  }
+}
+

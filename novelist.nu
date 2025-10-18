@@ -14,7 +14,6 @@ use modules/general.nu *
 #   novelist edit             - get prompt to search and edit an entry
 #   novelist remove           - get prompt to search and remove an entry
 def main [mode?: string = "show" category?: string = "all"] {
-  ensure-local-directory
   load-database
 
   match $mode {

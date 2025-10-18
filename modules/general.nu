@@ -1,9 +1,3 @@
-export def ensure-local-directory [] {
-  if not ( "~/.local/share/novelist" | path exists) {
-    mkdir ~/.local/share/novelist
-  }
-}
-
 export def search-novel-title [] {
   let search_title = (input "Search for a title: ")
   let search_list = stor open |
