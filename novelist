@@ -74,10 +74,10 @@ def "main edit" [title_to_edit? new_chapters? new_category? --skip-prompt(-s)] {
 }
 
 # remove title from database
-def "main remove" [] {
+def "main remove" [title?] {
   load-database
 
-  let title = search-novel-title
+  let title = search-novel-title $title
 
   stor delete -t novels -w $"title LIKE '($title)'"
   print $"Deleted \"($title)\""
