@@ -5,30 +5,16 @@ use modules/general.nu *
 
 # Your own novel list in simple script!
 #
-# Add, view, edit and remove your novels with these commands:
-#
-#   novelist                  - list all novels
-#   novelist show             - list all novels
-#   novelist show [category]  - list novels only in specific category
-#   novelist add              - get prompt to add a novel to the list
-#   novelist edit             - get prompt to search and edit an entry
-#   novelist remove           - get prompt to search and remove an entry
-def main [mode?: string = "show" category?: string = "all"] {
-  load-database
-
-  match $mode {
-    show => { show-novels $category },
-    add => { add-novel },
-    categories => { show-categories },
-    edit => { edit-novel },
-    remove => { remove-novel },
-    _ => { print "Unknown mode" }
-  }
-
-  save-database
+# Add, view, edit and remove your novels within local database.
+# Database file is located at "~/.local/share/novelist/novels.db"
+def main [] {
+  help main
 }
 
-def show-novels [category: string] {
+# list novels in database
+def "main show" [category: string = "all"] {
+  load-database
+
   let list = if $category == "all" {
     stor open | query db "SELECT * FROM novels"
   } else {
@@ -38,19 +24,30 @@ def show-novels [category: string] {
   print $list
 }
 
-def add-novel [] {
+# add novel to the database
+def "main add" [] {
+  load-database
+
   let title = (input "Plese enter novel title: ")
   let chapters = (input "Chapters: ")
   let category = (input "Category: ")
   stor insert -t novels -d {title: $title, chapters: $chapters, category: $category}
+
+  save-database
 }
 
-def show-categories [] {
+# list categories
+def "main categories" [] {
+  load-database
+
   stor open | query db "SELECT DISTINCT category FROM novels" | print $in
 }
 
 
-def edit-novel [] {
+# edit title in database
+def "main edit" [] {
+  load-database
+
   let title = search-novel-title
 
   let new_title = input "New title(leave empty to skip): "
@@ -73,11 +70,18 @@ def edit-novel [] {
   stor open |
     query db "SELECT * FROM novels WHERE title LIKE ? OR title LIKE ?" -p [$title $new_title] |
     print $in
+
+  save-database
 }
 
-def remove-novel [] {
+# remove title from database
+def "main remove" [] {
+  load-database
+
   let title = search-novel-title
 
   stor delete -t novels -w $"title LIKE '($title)'"
   print $"Deleted \"($title)\""
+
+  save-database
 }
