@@ -43,16 +43,15 @@ def "main categories" [] {
   stor open | query db "SELECT DISTINCT category FROM novels" | print $in
 }
 
-
 # edit title in database
-def "main edit" [] {
+def "main edit" [title_to_edit? new_chapters? new_category? --skip-prompt(-s)] {
   load-database
 
-  let title = search-novel-title
+  let title = search-novel-title $title_to_edit
 
-  let new_title = input "New title(leave empty to skip): "
-  let new_chapters = input "Update chapters: "
-  let new_category = input "Update category: "
+  let new_title = if ($skip_prompt) {null} else {input "New title(leave empty to skip): "}
+  let new_chapters = if ($skip_prompt or $new_chapters | is-not-empty) { $new_chapters } else { input "Update chapters: " }
+  let new_category = if ($skip_prompt or $new_category | is-not-empty) { $new_category } else { input "Update category: " }
 
   if ($new_chapters | is-not-empty) {
     stor update -t novels -u {chapters: $new_chapters} -w $"title LIKE '($title)'"
