@@ -1,5 +1,5 @@
-export def search-novel-title [] {
-  let search_title = (input "Search for a title: ")
+export def search-novel-title [title?] {
+  let search_title = if ($title | is-not-empty) {$title} else { input "Search for a title: " }
   let search_list = stor open |
     query db $"SELECT * FROM novels WHERE title LIKE ?" -p [$"%($search_title)%"]
 
