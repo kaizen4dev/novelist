@@ -5,7 +5,7 @@ export def search-novel-title [title?] {
 
   let novel_index = if ($search_list | is-empty) {
     print "Couldn't find any novel, try again"
-    search-novel-title
+    return (search-novel-title)
   } else {
     print "Novels found:"
     print $search_list
