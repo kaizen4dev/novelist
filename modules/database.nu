@@ -7,7 +7,7 @@ export def load-database [] {
     cp ~/.local/share/novelist/novels.db $database
     stor import -f $database
   } else {
-    stor create -t novels -c {title: str, chapters: float, category: str}
+    stor create -t novels -c {title: str, chapters: int, category: str}
   }
 
   ignore
