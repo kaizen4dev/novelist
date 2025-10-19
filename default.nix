@@ -2,7 +2,7 @@
 
 stdenv.mkDerivation rec {
   pname = "novelist";
-  version = "1.1.2";
+  version = "1.1.3";
 
   src = ./.;
 
