@@ -54,15 +54,18 @@ def "main edit" [title_to_edit? new_chapters? new_category? --skip-prompt(-s)] {
   let new_category = if ($skip_prompt or ($new_category | is-not-empty)) { $new_category } else { input "Update category: " }
 
   if ($new_chapters | is-not-empty) {
-    stor update -t novels -u {chapters: $new_chapters} -w $"title LIKE '($title)'"
+    stor open |
+      query db "UPDATE novels SET chapters = ? WHERE title LIKE ?" -p [$new_chapters $title]
   }
 
   if ($new_category | is-not-empty) {
-    stor update -t novels -u {category: $new_category} -w $"title LIKE '($title)'"
+    stor open |
+      query db "UPDATE novels SET category = ? WHERE title LIKE ?" -p [$new_category $title]
   }
 
   if ($new_title | is-not-empty) {
-    stor update -t novels -u {title: $new_title} -w $"title LIKE '($title)'"
+    stor open |
+      query db "UPDATE novels SET title = ? WHERE title LIKE ?" -p [$new_title $title]
   }
 
   print "Updated record:"
@@ -79,7 +82,8 @@ def "main remove" [title?] {
 
   let title = search-novel-title $title
 
-  stor delete -t novels -w $"title LIKE '($title)'"
+  stor open |
+    query db "DELETE FROM novels WHERE title LIKE ?" -p [$title]
   print $"Deleted \"($title)\""
 
   save-database
