@@ -88,3 +88,9 @@ def "main remove" [title?] {
 
   save-database
 }
+
+# show all lists
+def "main lists" [] {
+  load-database
+  stor open | table
+}
