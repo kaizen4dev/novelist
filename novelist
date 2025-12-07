@@ -105,6 +105,11 @@ def "main create" [list_name] {
 # delete list
 def "main burn" [list_name] {
   load-database
-  stor open | query db $"DROP TABLE IF EXISTS ($list_name)"
+  if (confirm $"You're about to delete ($list_name) list. It's not reversable.") {
+    stor open | query db $"DROP TABLE IF EXISTS ($list_name)"
+    print $"Deleted ($list_name) list"
+  } else {
+    print $"Deletion of ($list_name) is canceled"
+  }
   save-database
 }
