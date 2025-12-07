@@ -94,3 +94,10 @@ def "main lists" [] {
   load-database
   stor open | table
 }
+
+# create new list
+def "main create" [list_name] {
+  load-database
+  stor create -t $list_name -c {title: str, progress: int, category: str}
+  save-database
+}
