@@ -18,20 +18,20 @@ def "main show" [category: string = "all"] {
   let list = if $category == "all" {
     stor open | query db "SELECT * FROM novels"
   } else {
-    stor open | query db "SELECT title, chapters FROM novels WHERE category LIKE ?" -p [$category]
+    stor open | query db "SELECT title, progress FROM novels WHERE category LIKE ?" -p [$category]
   }
 
   print $list
 }
 
 # add novel to the database
-def "main add" [title? chapters? category?] {
+def "main add" [title? progress? category?] {
   load-database
 
   let title = if ($title | is-not-empty) {$title} else { input "Plese enter novel title: " }
-  let chapters = if ($chapters | is-not-empty) {$chapters} else { input "Chapters: " }
+  let progress = if ($progress | is-not-empty) {$progress} else { input "progress: " }
   let category = if ($category | is-not-empty) {$category} else { input "Category: " }
-  stor insert -t novels -d {title: $title, chapters: $chapters, category: $category}
+  stor insert -t novels -d {title: $title, progress: $progress, category: $category}
 
   save-database
 }
@@ -44,18 +44,18 @@ def "main categories" [] {
 }
 
 # edit title in database
-def "main edit" [title_to_edit? new_chapters? new_category? --skip-prompt(-s)] {
+def "main edit" [title_to_edit? new_progress? new_category? --skip-prompt(-s)] {
   load-database
 
   let title = search-novel-title $title_to_edit
 
   let new_title = if ($skip_prompt) {null} else {input "New title(leave empty to skip): "}
-  let new_chapters = if ($skip_prompt or ($new_chapters | is-not-empty)) { $new_chapters } else { input "Update chapters: " }
+  let new_progress = if ($skip_prompt or ($new_progress | is-not-empty)) { $new_progress } else { input "Update progress: " }
   let new_category = if ($skip_prompt or ($new_category | is-not-empty)) { $new_category } else { input "Update category: " }
 
-  if ($new_chapters | is-not-empty) {
+  if ($new_progress | is-not-empty) {
     stor open |
-      query db "UPDATE novels SET chapters = ? WHERE title LIKE ?" -p [$new_chapters $title]
+      query db "UPDATE novels SET progress = ? WHERE title LIKE ?" -p [$new_progress $title]
   }
 
   if ($new_category | is-not-empty) {
