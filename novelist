@@ -101,3 +101,10 @@ def "main create" [list_name] {
   stor create -t $list_name -c {title: str, progress: int, category: str}
   save-database
 }
+
+# delete list
+def "main burn" [list_name] {
+  load-database
+  stor open | query db $"DROP TABLE IF EXISTS ($list_name)"
+  save-database
+}
