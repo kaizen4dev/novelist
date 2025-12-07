@@ -4,7 +4,7 @@ export def load-database [] {
 
   if ( database-exists ) {
     let database = mktemp $"XXXXXX-novelist.db" -p /tmp/novelist
-    cp ~/.local/share/novelist/novels.db $database
+    cp ~/.local/share/novelist/novelist.db $database
     stor import -f $database
   } else {
     stor create -t novels -c {title: str, progress: int, category: str}
@@ -18,7 +18,7 @@ export def save-database [] {
   if (stor open | is-not-empty) {
     let temp = mktemp $"XXXXXX-novelist.db" -p /tmp/novelist
     stor export -f $temp
-    mv $temp ~/.local/share/novelist/novels.db
+    mv $temp ~/.local/share/novelist/novelist.db
     stor reset
   }
 
@@ -26,7 +26,7 @@ export def save-database [] {
 }
 
 def database-exists [] {
-  ls ~/.local/share/novelist | to text | $in has novels.db
+  ls ~/.local/share/novelist | to text | $in has novelist.db
 }
 
 def ensure-directories [] {
