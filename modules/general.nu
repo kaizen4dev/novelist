@@ -17,3 +17,8 @@ export def search-novel-title [title?] {
 
   return ($novel_title | to text | str trim)
 }
+
+export def confirm [message?] {
+  let answer = [no yes] | input list ($message + "\nProceed?")
+  $answer | str contains -i "y"
+}
