@@ -7,9 +7,9 @@ export def search-novel-title [title? --list-name(-l): string = "novels"] {
     print "Couldn't find any novel, try again"
     return (search-novel-title)
   } else {
-    print "Novels found:"
+    print "Titles found:"
     print $search_list
-    input "Select novel by index(0 by default): " |
+    input "Select title by index(0 by default): " |
       if ($in | is-empty) { 0 } else { $in | into int }
   }
 
