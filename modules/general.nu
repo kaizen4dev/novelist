@@ -1,7 +1,7 @@
-export def search-novel-title [title?] {
+export def search-novel-title [title? --list-name(-l): string = "novels"] {
   let search_title = if ($title | is-not-empty) {$title} else { input "Search for a title: " }
   let search_list = stor open |
-    query db $"SELECT * FROM novels WHERE title LIKE ?" -p [$"%($search_title)%"]
+    query db $"SELECT * FROM ($list_name) WHERE title LIKE ?" -p [$"%($search_title)%"]
 
   let novel_index = if ($search_list | is-empty) {
     print "Couldn't find any novel, try again"
