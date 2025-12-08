@@ -25,13 +25,13 @@ def "main show" [category: string = "all" --list-name(-l): string = "novels"] {
 }
 
 # add novel to the database
-def "main add" [title? progress? category?] {
+def "main add" [title? progress? category? --list-name(-l): string = "novels"] {
   load-database
 
   let title = if ($title | is-not-empty) {$title} else { input "Plese enter novel title: " }
   let progress = if ($progress | is-not-empty) {$progress} else { input "progress: " }
   let category = if ($category | is-not-empty) {$category} else { input "Category: " }
-  stor insert -t novels -d {title: $title, progress: $progress, category: $category}
+  stor insert -t $list_name -d {title: $title, progress: $progress, category: $category}
 
   save-database
 }
