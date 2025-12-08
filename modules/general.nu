@@ -4,7 +4,7 @@ export def search-novel-title [title? --list-name(-l): string = "novels"] {
     query db $"SELECT * FROM ($list_name) WHERE title LIKE ?" -p [$"%($search_title)%"]
 
   let novel_index = if ($search_list | is-empty) {
-    print "Couldn't find any novel, try again"
+    print "Couldn't find any title, try again"
     return (search-novel-title)
   } else {
     print "Titles found:"
