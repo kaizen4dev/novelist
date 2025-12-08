@@ -12,13 +12,13 @@ def main [] {
 }
 
 # list novels in database
-def "main show" [category: string = "all"] {
+def "main show" [category: string = "all" --list-name(-l): string = "novels"] {
   load-database
 
   let list = if $category == "all" {
-    stor open | query db "SELECT * FROM novels"
+    stor open | query db $"SELECT * FROM ($list_name)"
   } else {
-    stor open | query db "SELECT title, progress FROM novels WHERE category LIKE ?" -p [$category]
+    stor open | query db $"SELECT title, progress FROM ($list_name) WHERE category LIKE ?" -p [$category]
   }
 
   print $list
