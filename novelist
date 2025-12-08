@@ -77,13 +77,13 @@ def "main edit" [title_to_edit? new_progress? new_category? --skip-prompt(-s)] {
 }
 
 # remove title from database
-def "main remove" [title?] {
+def "main remove" [title? --list-name(-l): string = "novels"] {
   load-database
 
-  let title = search-novel-title $title
+  let title = search-novel-title $title -l $list_name
 
   stor open |
-    query db "DELETE FROM novels WHERE title LIKE ?" -p [$title]
+    query db $"DELETE FROM ($list_name) WHERE title LIKE ?" -p [$title]
   print $"Deleted \"($title)\""
 
   save-database
