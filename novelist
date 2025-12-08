@@ -44,10 +44,10 @@ def "main categories" [--list-name(-l): string = "novels"] {
 }
 
 # edit title in database
-def "main edit" [title_to_edit? new_progress? new_category? --skip-prompt(-s)] {
+def "main edit" [title_to_edit? new_progress? new_category? --skip-prompt(-s) --list-name(-l): string = "novels"] {
   load-database
 
-  let title = search-novel-title $title_to_edit
+  let title = search-novel-title $title_to_edit -l $list_name
 
   let new_title = if ($skip_prompt) {null} else {input "New title(leave empty to skip): "}
   let new_progress = if ($skip_prompt or ($new_progress | is-not-empty)) { $new_progress } else { input "Update progress: " }
@@ -55,22 +55,22 @@ def "main edit" [title_to_edit? new_progress? new_category? --skip-prompt(-s)] {
 
   if ($new_progress | is-not-empty) {
     stor open |
-      query db "UPDATE novels SET progress = ? WHERE title LIKE ?" -p [$new_progress $title]
+      query db $"UPDATE ($list_name) SET progress = ? WHERE title LIKE ?" -p [$new_progress $title]
   }
 
   if ($new_category | is-not-empty) {
     stor open |
-      query db "UPDATE novels SET category = ? WHERE title LIKE ?" -p [$new_category $title]
+      query db $"UPDATE ($list_name) SET category = ? WHERE title LIKE ?" -p [$new_category $title]
   }
 
   if ($new_title | is-not-empty) {
     stor open |
-      query db "UPDATE novels SET title = ? WHERE title LIKE ?" -p [$new_title $title]
+      query db $"UPDATE ($list_name) SET title = ? WHERE title LIKE ?" -p [$new_title $title]
   }
 
   print "Updated record:"
   stor open |
-    query db "SELECT * FROM novels WHERE title LIKE ? OR title LIKE ?" -p [$title $new_title] |
+    query db $"SELECT * FROM ($list_name) WHERE title LIKE ? OR title LIKE ?" -p [$title $new_title] |
     print $in
 
   save-database
