@@ -37,10 +37,10 @@ def "main add" [title? progress? category? --list-name(-l): string = "novels"] {
 }
 
 # list categories
-def "main categories" [] {
+def "main categories" [--list-name(-l): string = "novels"] {
   load-database
 
-  stor open | query db "SELECT DISTINCT category FROM novels" | print $in
+  stor open | query db $"SELECT DISTINCT category FROM ($list_name)" | print $in
 }
 
 # edit title in database
