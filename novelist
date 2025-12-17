@@ -3,15 +3,18 @@
 use modules/database.nu *
 use modules/general.nu *
 
-# Your own novel list in simple script!
+# Your own title lists in simple script!
 #
-# Add, view, edit and remove your novels within local database.
-# Database file is located at "~/.local/share/novelist/novels.db"
+# Add, view, edit and remove your titles within local lists.
+# You can find database here: "~/.local/share/novelist/novelist.db"
+#
+# Use --help flag to view possible parameters for each subcommand.
+# Example: novelist show --help
 def main [] {
   help main
 }
 
-# list novels in database
+# show titles in the list
 def "main show" [category: string = "all" --list-name(-l): string = "novels"] {
   load-database
 
@@ -24,7 +27,7 @@ def "main show" [category: string = "all" --list-name(-l): string = "novels"] {
   print $list
 }
 
-# add novel to the database
+# add title to the list
 def "main add" [title? progress? category? --list-name(-l): string = "novels"] {
   load-database
 
@@ -36,15 +39,18 @@ def "main add" [title? progress? category? --list-name(-l): string = "novels"] {
   save-database
 }
 
-# list categories
+# show categories of a list
 def "main categories" [--list-name(-l): string = "novels"] {
   load-database
 
   stor open | query db $"SELECT DISTINCT category FROM ($list_name)" | print $in
 }
 
-# edit title in database
-def "main edit" [title_to_edit? new_progress? new_category? --skip-prompt(-s) --list-name(-l): string = "novels"] {
+# edit title in the list
+def "main edit" [title_to_edit? new_progress? new_category?
+  --skip-prompt(-s) # don't change title and don't ask for ommited parameters
+  --list-name(-l): string = "novels"
+  ] {
   load-database
 
   let title = search-novel-title $title_to_edit -l $list_name
@@ -76,7 +82,7 @@ def "main edit" [title_to_edit? new_progress? new_category? --skip-prompt(-s) --
   save-database
 }
 
-# remove title from database
+# remove title from the list
 def "main remove" [title? --list-name(-l): string = "novels"] {
   load-database
 
@@ -102,7 +108,7 @@ def "main create" [list_name] {
   save-database
 }
 
-# delete list
+# delete list and all titles associated with it
 def "main burn" [list_name] {
   load-database
   if (confirm $"You're about to delete ($list_name) list. It's not reversable.") {
