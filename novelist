@@ -25,10 +25,10 @@ def "main version" [] {
 @example "Show titles from reading category within default list" { novelist show reading }
 @example "Show titles from watching category within movies list" { novelist show watching -l movies }
 @example "Show movies watching(alt. of above)" { novelist show -l movies watching }
-def "main show" [category: string = "all" --list-name(-l): string = "novels"] {
+def "main show" [category?: string --list-name(-l): string = "novels"] {
   load-database
 
-  let list = if $category == "all" {
+  let list = if ($category | is-empty) {
     stor open | query db $"SELECT * FROM ($list_name)"
   } else {
     stor open | query db $"SELECT title, progress FROM ($list_name) WHERE category LIKE ?" -p [$category]
