@@ -1,25 +1,47 @@
 # Novelist
-A simple nushell script for your reading list.
+A simple nushell script for your title lists.
 
 ## Motivation
-I have always been reluctant with 2 things:
-- properly tracking books I read
-- using web for this purpose
+As it came to be, for my entire reading journey, I've been using simple txt file for tracking purposes.
+I don't need anything fancy, just one line per book in format "title, progress, category" is enough for me.
+Once number of lines in said file hit couple of hundred, it became a mess(obviously). And so this project was born.
 
-As it came to be, for my entire reading journey, I've been using simple txt file.
-Once number of lines in said file hit couple of hundred, it started to feel somewhat awkward, and I did what any sane person would do - I kept avoiding this awkwardness.
-Not long ago I discovered nushell and decided to try it for once. Before I knew it, this script was born.
+## How it works
+Basically, novelist acts as a wrapper around sqlite database.
+With help of novelist (sub)commands you can create tables(lists) and add/edit/remove rows(titles) within those tables.
+Each list/table has 3 columns: title, progress and category.
 
-Yeah, no grand purpose here, there wasn't even intention to solve the problem to begin with.
+## Commands preview
+General:
+- novelist - show all subcommands
+- novelist version - show novelist version
+
+Lists:
+- novelist lists - show all lists
+- novelist create - create new list
+- novelist burn - delete list and all titles associated with it
+
+Titles:
+- novelist show - show titles in the list
+- novelist add - add title to the list
+- novelist edit - edit title in the list
+- novelist remove - remove title from the list
+- novelist categories - show categories of a list
+
+For further information on how to use them please proceed with installation and use --help flag on every command.
+I've made an effort to make help messages (somewhat) helpful and don't want to repeat myself here, if you still
+have some questions you're free to open an issue and ask me.
 
 ## Installation
-Didn't figured it out yet.
+Using nix(with flakes):
+- run ```nix profile add github:kaizen4dev/novelist```
 
-Hence, it isn't packages yet.
+Other:
+- make sure nushell is istalled
+- use it as any other script
 
-Nothing to see here, yet.
+## To Do
+This section is a list of features or changes that novelist is lacking and I might be will to implement them in the future.
 
-Go away.
-
-## To Do ation
-blank
+- ability to change default list
+- ability to rename lists
