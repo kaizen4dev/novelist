@@ -20,6 +20,11 @@ def "main version" [] {
 }
 
 # show titles in the list
+@example "Show all titles from default list" { novelist show }
+@example "Show all titles from movies list" { novelist show -l movies }
+@example "Show titles from reading category within default list" { novelist show reading }
+@example "Show titles from watching category within movies list" { novelist show watching -l movies }
+@example "Show movies watching(alt. of above)" { novelist show -l movies watching }
 def "main show" [category: string = "all" --list-name(-l): string = "novels"] {
   load-database
 
@@ -33,6 +38,12 @@ def "main show" [category: string = "all" --list-name(-l): string = "novels"] {
 }
 
 # add title to the list
+@example "Add title to default list(novelist will ask for details)" { novelist add }
+@example "Add title to default list(alt.)" { novelist add "something very fun" "chapter 12" reading }
+@example "Add title to default list(alt.)" { novelist add "something very fun" 12 reading }
+@example "Add title to movies list(novelist will ask for details)" { novelist add -l movies }
+@example "Add title to movies list(alt.)" { novelist add -l movies "not so fun" "S1E2" dropped }
+@example "Add title to movies list(alt.)" { novelist add "not so fun" "S1E2" dropped -l movies }
 def "main add" [title? progress? category? --list-name(-l): string = "novels"] {
   load-database
 
@@ -45,6 +56,8 @@ def "main add" [title? progress? category? --list-name(-l): string = "novels"] {
 }
 
 # show categories of a list
+@example "Show categories of default list" { novelist categories }
+@example "Show categories of movies list" { novelist categories -l movies}
 def "main categories" [--list-name(-l): string = "novels"] {
   load-database
 
@@ -52,6 +65,14 @@ def "main categories" [--list-name(-l): string = "novels"] {
 }
 
 # edit title in the list
+@example "Edit title in default list, novelist will ask for details" { novelist edit }
+@example "Edit title in movies list, novelist will ask for details" { novelist edit -l movies }
+@example "Search for 'My title' in novels(default list) and skip questions(will not edit anything)" { novelist edit -s "My title" }
+@example "Search for 'My title' in movies and skip questions(will not edit anything)" { novelist edit -s -l movies "My title" }
+@example "Search for 'My title' in novels(default list), update it's progress and skip rest" { novelist edit -s "My title" "chapter 12" }
+@example "Search for 'My title' in movies, update it's progress and skip rest" { novelist edit -s -l movies "My title" "episode 12" }
+@example "Search for 'My title' in novels(default list), update it's progress and category, skip rest" { novelist edit -s "My title" "chapter 12" dropped }
+@example "Search for 'My title' in movies, update it's progress and category, skip rest" { novelist edit -s -l movies "My title" "episode 12" dropped }
 def "main edit" [title_to_edit? new_progress? new_category?
   --skip-prompt(-s) # don't change title and don't ask for ommited parameters
   --list-name(-l): string = "novels"
@@ -88,6 +109,12 @@ def "main edit" [title_to_edit? new_progress? new_category?
 }
 
 # remove title from the list
+@example "Search and remove title from default list" { novelist remove }
+@example "Search and remove title from default list(alt.)" { novelist remove something }
+@example "Search and remove title from default list(alt.)" { novelist remove "something else" }
+@example "Search and remove title from movies list" { novelist remove -l movies }
+@example "Search and remove title from movies list(alt.)" { novelist remove something -l movies }
+@example "Search and remove title from movies list(alt.)" { novelist remove -l movies "something else" }
 def "main remove" [title? --list-name(-l): string = "novels"] {
   load-database
 
@@ -102,12 +129,14 @@ def "main remove" [title? --list-name(-l): string = "novels"] {
 }
 
 # show all lists
+@example "Show all lists" { novelist lists }
 def "main lists" [] {
   load-database
   stor open | table
 }
 
 # create new list
+@example "Create movies list" { novelist create movies }
 def "main create" [list_name] {
   load-database
   stor create -t $list_name -c {title: str, progress: int, category: str}
@@ -115,6 +144,7 @@ def "main create" [list_name] {
 }
 
 # delete list and all titles associated with it
+@example "Delete movies list and all titles within it" { novelist burn movies }
 def "main burn" [list_name] {
   load-database
   if (confirm $"You're about to delete ($list_name) list. It's not reversable.") {
