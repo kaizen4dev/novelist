@@ -14,6 +14,11 @@ def main [] {
   help main
 }
 
+# show novelist version
+def "main version" [] {
+  "2.0.0"
+}
+
 # show titles in the list
 def "main show" [category: string = "all" --list-name(-l): string = "novels"] {
   load-database
