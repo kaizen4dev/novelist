@@ -90,7 +90,8 @@ def "main remove" [title? --list-name(-l): string = "novels"] {
 
   stor open |
     query db $"DELETE FROM ($list_name) WHERE title LIKE ?" -p [$title]
-  print $"Deleted \"($title)\""
+
+  print $"Deleted \"($title)\" from ($list_name)"
 
   save-database
 }
