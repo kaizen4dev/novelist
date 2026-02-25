@@ -138,6 +138,10 @@ def "main lists" [] {
 # create new list
 @example "Create movies list" { novelist create movies }
 def "main create" [list_name] {
+  if (($list_name | split words | length) > 1) {
+    print "Special characters are forbitten for list names, cancelling."
+    exit 2
+  }
   load-database
   stor create -t $list_name -c {title: str, progress: int, category: str}
   save-database
