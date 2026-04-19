@@ -17,10 +17,14 @@ stdenv.mkDerivation rec {
   dontBuild = true;
 
   installPhase = ''
-    mkdir -p $out/bin
-    cp ${pname} $out/bin/
-    cp -r modules/ $out/bin/
-    chmod +x $out/bin/${pname}
+    mkdir -p $out/{bin,share/${pname}}
+    cp -r * $out/share/${pname}
+    bin=$out/bin/${pname}
+    cat > $bin <<EOF
+      #!/bin/sh -e
+      exec $out/share/${pname}/${pname} "\$@"
+    EOF
+    chmod +x $bin
   '';
 
   propagatedBuildInputs = [ nushell ];
