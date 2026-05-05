@@ -41,7 +41,7 @@ Other:
 - use it as any other script
 
 ## To Do
-This section is a list of features or changes that novelist is lacking and I might be will to implement them in the future.
+This section is a list of features or changes that novelist is lacking and I might be willing to implement them in the future.
 
 - ability to change default list
 - ability to rename lists
